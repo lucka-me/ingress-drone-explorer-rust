@@ -9,7 +9,6 @@ on:
 env:
   CARGO_TERM_COLOR: always
   BINARY_NAME: ingress-drone-explorer
-  RUSTFLAGS: '-C target-feature=+crt-static'
 
 jobs:
   build:
@@ -40,14 +39,14 @@ jobs:
 
       - name: Build as native
         if: matrix.native
-        run: cargo build -r --target ${{ matrix.arch }}-${{ matrix.platform }} -v
+        run: cargo build -r --target ${{ matrix.arch }}-${{ matrix.platform }}
 
       - name: Setup cross
         if: matrix.native != true
         run: cargo install cross
       - name: Build with cross
         if: matrix.native != true
-        run: cross build -r --target ${{ matrix.arch }}-${{ matrix.platform }} -v
+        run: cross build -r --target ${{ matrix.arch }}-${{ matrix.platform }}
 
       - name: Upload Binary
         uses: actions/upload-artifact@v3
