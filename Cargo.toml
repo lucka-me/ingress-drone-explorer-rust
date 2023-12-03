@@ -1,0 +1,13 @@
+[package]
+name = "ingress-drone-explorer"
+version = "0.1.0"
+description = "Analyze reachable Portals for Ingress Drone Mark I."
+repository = "https://github.com/lucka-me/ingress-drone-explorer-rust"
+license = "MIT"
+authors = [ "lucka-me" ]
+edition = "2021"
+
+[dependencies]
+clap = { version = "4.4.10", features = ["derive"] }
+serde = { version = "1.0.193", features = ["derive"] }
+serde_json = "1.0.108"
