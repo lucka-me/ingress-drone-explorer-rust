@@ -9,6 +9,7 @@ on:
 env:
   CARGO_TERM_COLOR: always
   BINARY_NAME: ingress-drone-explorer
+  RUSTFLAGS: '-C target-feature=+crt-static'
 
 jobs:
   build:
