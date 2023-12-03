@@ -12,38 +12,44 @@ env:
 
 jobs:
   build:
-    name: Build for ${{ matrix.target }}
-    runs-on: ubuntu-latest
+    name: Build for ${{ matrix.arch }}-${{ matrix.platform }}
+    runs-on: ${{ matrix.os }}-latest
     strategy:
       matrix:
-        target:
-          - x86_64-unknown-linux-gnu
-          - aarch64-unknown-linux-gnu
-          - x86_64-apple-darwin
-          - aarch64-apple-darwin
-          - x86_64-pc-windows-msvc
-          - aarch64-pc-windows-msvc
+        arch:
+          - x86_64
+          - aarch64
+        platform:
+          - apple-darwin
+          - pc-windows-msvc
+          - unknown-linux-gnu
         include:
-          - target: x86_64-unknown-linux-gnu
+          - arch: x86_64
             native: true
+          - platform: apple-darwin
+            os: macos
+          - platform: pc-windows-msvc
+            os: windows
+          - platform: unknown-linux-gnu
+            os: ubuntu
     steps:
       - uses: actions/checkout@v3
       - name: Setup toolchain
-        run: rustup target add ${{ matrix.target }}
+        run: rustup target add ${{ matrix.arch }}-${{ matrix.platform }}
 
       - name: Build as native
         if: matrix.native
-        run: cargo build -r --target ${{ matrix.target }} -v
+        run: cargo build -r --target ${{ matrix.arch }}-${{ matrix.platform }} -v
 
       - name: Setup cross
-        if: matrix.native != true
+        if: !matrix.native
         run: cargo install cross
       - name: Build with cross
-        if: matrix.native != true
-        run: cross build -r --target ${{ matrix.target }} -v
+        if: !matrix.native
+        run: cross build -r --target ${{ matrix.arch }}-${{ matrix.platform }} -v
 
       - name: Upload Binary
         uses: actions/upload-artifact@v3
         with:
-          name: ${{ env.BINARY_NAME }}-${{ matrix.target }}
+          name: ${{ env.BINARY_NAME }}-${{ matrix.arch }}-${{ matrix.platform }}
           path: target/release/${{ env.BINARY_NAME }}*
