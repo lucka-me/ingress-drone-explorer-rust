@@ -23,16 +23,22 @@ jobs:
           - aarch64-apple-darwin
           - x86_64-pc-windows-msvc
           - aarch64-pc-windows-msvc
+        include:
+          - target: x86_64-unknown-linux-gnu
+            native: true
     steps:
       - uses: actions/checkout@v3
       - name: Setup toolchain
         run: rustup target add ${{ matrix.target }}
+      - name: Setup cross
+        if: matrix.native != true
+        run: cargo install cross
       - name: Build
-        run: cargo build -r --target ${{ matrix.target }}
+        run: cargo build -r --target ${{ matrix.target }} -v
       - name: Upload Binary
         uses: actions/upload-artifact@v3
         with:
           name: ${{ env.BINARY_NAME }}-${{ matrix.target }}
           path: |
-            target/release/${{ env.BINARY_NAME }}*
-            !target/release/${{ env.BINARY_NAME }}*.d
+            target/release/${{ env.BINARY_NAME }}
+            target/release/${{ env.BINARY_NAME }}.exe
