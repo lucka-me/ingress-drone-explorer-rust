@@ -1,10 +1,13 @@
 # Ingress Drone Explorer - Rust
 
+[![CI](https://github.com/lucka-me/ingress-drone-explorer-rust/actions/workflows/ci.yml/badge.svg)](https://github.com/lucka-me/ingress-drone-explorer-rust/actions/workflows/ci.yml "CI Workflow")
 [![Lines of code][rust-loc]][rust-repo]
 
 An offline CLI tool to analyze reachable Portals for Ingress Drone Mark I.
 
 Implementations in different languages are listed and compared in [Benchmark](#benchmark).
+
+The CI workflow builds x86_64 and aarch64 binaries for macOS, Windows and Linux, the files are available as artifacts.
 
 ## Build from Source
 
